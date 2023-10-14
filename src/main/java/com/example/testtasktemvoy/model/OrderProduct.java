@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "order_product")
@@ -27,5 +28,10 @@ public class OrderProduct {
         pk.setOrder(order);
         pk.setProduct(product);
         this.quantity = quantity;
+    }
+
+    @Transient
+    public Double getTotalPrice(){
+        return pk.getProduct().getPrice() * quantity;
     }
 }

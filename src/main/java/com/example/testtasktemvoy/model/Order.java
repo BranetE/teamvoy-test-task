@@ -7,15 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -36,6 +28,11 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @Column
-    private Integer totalPrice;
+
+    @Transient
+    public Double getTotalPrice(){
+        return orderProducts.stream()
+                .map(OrderProduct::getTotalPrice)
+                .reduce(0.0, Double::sum);
+    }
 }
