@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "order_product")
+@Table(name = "order_products")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 public class OrderProduct {
     @EmbeddedId
     private OrderProductPK pk;
-    @Column
+    @Column(nullable = false)
     private Integer quantity;
 
     public OrderProduct(Order order, Product product, Integer quantity){

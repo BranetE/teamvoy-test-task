@@ -1,5 +1,6 @@
 package com.example.testtasktemvoy.service.impl;
 
+import com.example.testtasktemvoy.exception.ErrorMessage;
 import com.example.testtasktemvoy.model.Product;
 import com.example.testtasktemvoy.repository.ProductRepository;
 import com.example.testtasktemvoy.service.ProductService;
@@ -22,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(Long id, Product product) {
-        Product currentProduct = productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Product currentProduct = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PRODUCT_DOESNT_EXIST + id));
         product.setId(currentProduct.getId());
         productRepository.save(product);
         
@@ -30,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void changeItemsLeft(Long id, Integer itemsLeft) {
+        if(!productRepository.existsById(id)) throw new EntityNotFoundException(ErrorMessage.PRODUCT_DOESNT_EXIST + id);
         productRepository.setItemsLeft(itemsLeft, id);
     }
 
@@ -40,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
+        if(!productRepository.existsById(id)) throw new EntityNotFoundException(ErrorMessage.PRODUCT_DOESNT_EXIST + id);
         productRepository.deleteById(id);
     }
 }

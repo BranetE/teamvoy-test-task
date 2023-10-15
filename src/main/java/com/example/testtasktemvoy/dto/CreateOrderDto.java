@@ -1,12 +1,10 @@
 package com.example.testtasktemvoy.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Setter
-@Getter
+@Data
 public class CreateOrderDto {
     private List<OrderProductDto> orderProducts;
     private String comment;

@@ -2,6 +2,7 @@ package com.example.testtasktemvoy.service.impl;
 
 import com.example.testtasktemvoy.dto.CreateOrderDto;
 import com.example.testtasktemvoy.dto.OrderProductDto;
+import com.example.testtasktemvoy.exception.ErrorMessage;
 import com.example.testtasktemvoy.model.Order;
 import com.example.testtasktemvoy.model.OrderProduct;
 import com.example.testtasktemvoy.model.OrderStatus;
@@ -38,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrder(Long id, CreateOrderDto updateOrderDto) {
-        Order order = orderRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Order order = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.ORDER_DOESNT_EXIST + id));
         order.setComment(updateOrderDto.getComment());
 
         List<OrderProduct> orderProductList = getOrderProductListFromDto(updateOrderDto.getOrderProducts(), order);
@@ -59,11 +60,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(Long id) {
+        if(!orderRepository.existsById(id)) throw new EntityNotFoundException(ErrorMessage.ORDER_DOESNT_EXIST + id);
         orderRepository.deleteById(id);
     }
 
     @Override
     public void markOrderAsPaid(Long id) {
+        if(!orderRepository.existsById(id)) throw new EntityNotFoundException(ErrorMessage.ORDER_DOESNT_EXIST + id);
         orderRepository.setOrderStatus(id, OrderStatus.PAID);
     }
 

@@ -1,5 +1,6 @@
 package com.example.testtasktemvoy.dto;
 
+import lombok.Data;
 import lombok.Value;
 
 import java.io.Serializable;
@@ -7,8 +8,8 @@ import java.io.Serializable;
 /**
  * DTO for {@link com.example.testtasktemvoy.model.Product}
  */
-@Value
-public class CreateProductDto implements Serializable {
+@Data
+public class CreateProductDto {
     String name;
     Integer price;
     Long itemsLeft;

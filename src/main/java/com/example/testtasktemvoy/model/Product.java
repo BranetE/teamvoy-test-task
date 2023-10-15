@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,10 +22,10 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(nullable = false)
     private String name;
-    @Column
+    @Column(nullable = false)
     private Double price;
-    @Column(name = "items_left")
+    @Column(name = "items_left", nullable = false)
     private Long itemsLeft;
 }

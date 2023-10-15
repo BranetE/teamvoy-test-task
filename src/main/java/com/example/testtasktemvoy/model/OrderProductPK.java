@@ -1,6 +1,7 @@
 package com.example.testtasktemvoy.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class OrderProductPK implements Serializable {
     @JsonBackReference
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
