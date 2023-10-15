@@ -1,7 +1,6 @@
 package com.example.testtasktemvoy.service;
 
 import com.example.testtasktemvoy.dto.CreateOrderDto;
-import com.example.testtasktemvoy.dto.CreateProductDto;
 import com.example.testtasktemvoy.model.Order;
 
 import java.util.List;
@@ -12,4 +11,5 @@ public interface OrderService {
     List<Order> getAllOrders();
     List<Order> getOrdersByUser(Long userId);
     void deleteOrder(Long id);
+    void markOrderAsPaid(Long id);
 }

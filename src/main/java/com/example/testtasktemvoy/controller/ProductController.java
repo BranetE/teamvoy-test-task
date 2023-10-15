@@ -1,6 +1,5 @@
 package com.example.testtasktemvoy.controller;
 
-import com.example.testtasktemvoy.dto.CreateProductDto;
 import com.example.testtasktemvoy.model.Product;
 import com.example.testtasktemvoy.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +22,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createProduct(@RequestBody CreateProductDto createProductDto){
-        productService.createProduct(createProductDto);
+    public ResponseEntity<HttpStatus> createProduct(@RequestBody Product product){
+        productService.createProduct(product);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateProduct(@RequestBody CreateProductDto updateProductDto, @PathVariable Long id){
-        productService.updateProduct(id, updateProductDto);
+    public ResponseEntity<HttpStatus> updateProduct(@RequestBody Product product, @PathVariable Long id){
+        productService.updateProduct(id, product);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

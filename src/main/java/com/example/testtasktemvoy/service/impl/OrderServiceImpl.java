@@ -4,6 +4,7 @@ import com.example.testtasktemvoy.dto.CreateOrderDto;
 import com.example.testtasktemvoy.dto.OrderProductDto;
 import com.example.testtasktemvoy.model.Order;
 import com.example.testtasktemvoy.model.OrderProduct;
+import com.example.testtasktemvoy.model.OrderStatus;
 import com.example.testtasktemvoy.model.Product;
 import com.example.testtasktemvoy.repository.OrderProductRepository;
 import com.example.testtasktemvoy.repository.OrderRepository;
@@ -19,9 +20,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private OrderRepository orderRepository;
-    private OrderProductRepository orderProductRepository;
-    private ProductRepository productRepository;
+
+    private final OrderRepository orderRepository;
+    private final OrderProductRepository orderProductRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public void createOrder(CreateOrderDto createOrderDto) {
@@ -58,6 +60,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    public void markOrderAsPaid(Long id) {
+        orderRepository.setOrderStatus(id, OrderStatus.PAID);
     }
 
     private List<OrderProduct> getOrderProductListFromDto(List<OrderProductDto> orderProductDtoList, Order order){

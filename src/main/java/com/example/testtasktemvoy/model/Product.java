@@ -26,6 +26,6 @@ public class Product {
     private String name;
     @Column
     private Double price;
-    @Column
+    @Column(name = "items_left")
     private Long itemsLeft;
 }

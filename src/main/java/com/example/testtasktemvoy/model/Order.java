@@ -22,6 +22,8 @@ public class Order {
     private Long id;
     @Column
     private String comment;
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
     @JsonManagedReference
     @OneToMany(mappedBy = "pk.order")
     private List<OrderProduct> orderProducts;
