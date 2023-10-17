@@ -1,16 +1,17 @@
 package com.example.testtasktemvoy.dto;
 
 import lombok.Data;
-import lombok.Value;
 
-import java.io.Serializable;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
-/**
- * DTO for {@link com.example.testtasktemvoy.model.Product}
- */
 @Data
 public class CreateProductDto {
+    @NotBlank
     String name;
-    Integer price;
-    Long itemsLeft;
+    String description;
+    @Min(10)
+    Double price;
+    @Min(1)
+    Integer itemsLeft;
 }

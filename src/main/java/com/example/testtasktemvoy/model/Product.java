@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -24,8 +25,10 @@ public class Product {
     private Long id;
     @Column(nullable = false)
     private String name;
+    @Column
+    private String description;
     @Column(nullable = false)
     private Double price;
     @Column(name = "items_left", nullable = false)
-    private Long itemsLeft;
+    private Integer itemsLeft;
 }

@@ -1,5 +1,6 @@
 package com.example.testtasktemvoy.controller;
 
+import com.example.testtasktemvoy.dto.CreateProductDto;
 import com.example.testtasktemvoy.model.Product;
 import com.example.testtasktemvoy.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,14 +24,15 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createProduct(@RequestBody Product product){
-        productService.createProduct(product);
+    public ResponseEntity<HttpStatus> createProduct(@Valid @RequestBody CreateProductDto createProductDto){
+
+        productService.createProduct(createProductDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateProduct(@RequestBody Product product, @PathVariable Long id){
-        productService.updateProduct(id, product);
+    public ResponseEntity<HttpStatus> updateProduct(@Valid @RequestBody CreateProductDto createProductDto, @PathVariable Long id){
+        productService.updateProduct(id, createProductDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

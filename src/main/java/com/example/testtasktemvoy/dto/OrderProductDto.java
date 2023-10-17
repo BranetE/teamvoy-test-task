@@ -1,15 +1,12 @@
 package com.example.testtasktemvoy.dto;
 
 import com.example.testtasktemvoy.model.Product;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
+@AllArgsConstructor
 public class OrderProductDto {
-//    private Product product;
-    private Long productId;
-    private Integer quantity;
-
+    Product product;
+    Integer quantity;
 }

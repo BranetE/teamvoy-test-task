@@ -1,6 +1,7 @@
 package com.example.testtasktemvoy.controller;
 
 import com.example.testtasktemvoy.dto.CreateOrderDto;
+import com.example.testtasktemvoy.dto.OrderDto;
 import com.example.testtasktemvoy.model.Order;
 import com.example.testtasktemvoy.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,7 +28,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<List<Order>> getOrders(){
+    public ResponseEntity<List<OrderDto>> getOrders(){
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getAllOrders());
     }
 
@@ -36,13 +38,13 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createOrder(@RequestBody CreateOrderDto createOrderDto) {
+    public ResponseEntity<HttpStatus> createOrder(@RequestBody @Valid CreateOrderDto createOrderDto) {
         orderService.createOrder(createOrderDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateOrder(@PathVariable Long id, @RequestBody CreateOrderDto updateOrderDto) {
+    public ResponseEntity<HttpStatus> updateOrder(@PathVariable Long id, @RequestBody @Valid CreateOrderDto updateOrderDto) {
         orderService.updateOrder(id, updateOrderDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

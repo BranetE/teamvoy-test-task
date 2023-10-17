@@ -8,6 +8,7 @@ import lombok.Setter;
 
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,9 +24,12 @@ public class Order {
     @Column
     private String comment;
     @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
     @JsonManagedReference
-    @OneToMany(mappedBy = "pk.order")
+    @OneToMany(mappedBy = "pk.order", fetch = FetchType.EAGER)
     private List<OrderProduct> orderProducts;
     @ManyToOne
     @JoinColumn(name = "user_id")

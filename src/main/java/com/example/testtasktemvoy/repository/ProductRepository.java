@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
-    @Query(value = "update product set items_left = :itemsLeft where id = :id",
+    @Query(value = "update products set items_left = :itemsLeft where id = :id",
     nativeQuery = true)
     void setItemsLeft(@Param("itemsLeft") Integer itemsLeft, @Param("id") Long id);
 }
