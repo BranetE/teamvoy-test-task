@@ -9,11 +9,11 @@ import com.example.testtasktemvoy.model.Order;
 import com.example.testtasktemvoy.model.OrderProduct;
 import com.example.testtasktemvoy.model.OrderStatus;
 import com.example.testtasktemvoy.model.Product;
+import com.example.testtasktemvoy.model.User;
 import com.example.testtasktemvoy.repository.OrderProductRepository;
 import com.example.testtasktemvoy.repository.OrderRepository;
 import com.example.testtasktemvoy.repository.ProductRepository;
 import com.example.testtasktemvoy.service.OrderService;
-import com.example.testtasktemvoy.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +34,11 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
 
     @Override
-    public void createOrder(CreateOrderDto createOrderDto) {
+    public void createOrder(CreateOrderDto createOrderDto, User user) {
         Order order = new Order();
         order.setOrderStatus(OrderStatus.UNPAID);
         order.setComment(createOrderDto.getComment());
+        order.setUser(user);
 
         List<OrderProduct> orderProductList = getOrderProductsFromDto(createOrderDto.getCreateOrderProductDtoList(), order);
 
@@ -70,8 +71,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrdersByUser(Long userId) {
-        return orderRepository.getOrderByUserId(userId);
+    public List<OrderDto> getOrdersByUser(Long userId) {
+        return orderRepository.getOrderByUserId(userId).stream()
+                .sorted(Comparator.comparingLong(Order::getId))
+                .map(OrderDtoMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override

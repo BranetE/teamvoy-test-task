@@ -3,10 +3,12 @@ package com.example.testtasktemvoy.controller;
 import com.example.testtasktemvoy.dto.CreateOrderDto;
 import com.example.testtasktemvoy.dto.OrderDto;
 import com.example.testtasktemvoy.model.Order;
+import com.example.testtasktemvoy.model.User;
 import com.example.testtasktemvoy.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,13 +35,13 @@ public class OrderController {
     }
 
     @GetMapping("/getByUser/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUser(@PathVariable Long userId) {
+    public ResponseEntity<List<OrderDto>> getOrdersByUser(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrdersByUser(userId));
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createOrder(@RequestBody @Valid CreateOrderDto createOrderDto) {
-        orderService.createOrder(createOrderDto);
+    public ResponseEntity<HttpStatus> createOrder(@RequestBody @Valid CreateOrderDto createOrderDto, @AuthenticationPrincipal User currentUser) {
+        orderService.createOrder(createOrderDto, currentUser);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
