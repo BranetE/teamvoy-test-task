@@ -2,7 +2,6 @@ package com.example.testtasktemvoy.service;
 
 import com.example.testtasktemvoy.dto.CreateOrderDto;
 import com.example.testtasktemvoy.dto.OrderDto;
-import com.example.testtasktemvoy.model.Order;
 import com.example.testtasktemvoy.model.User;
 
 import java.util.List;

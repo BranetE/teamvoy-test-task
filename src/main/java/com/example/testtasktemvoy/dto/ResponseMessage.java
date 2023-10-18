@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 @Builder
 public class ResponseMessage {
-    Integer status;
-    String exception;
-    String url;
-    String message;
-    String stackTrace;
+    private Integer status;
+    private String exception;
+    private String url;
+    private String message;
+    private String stackTrace;
 }

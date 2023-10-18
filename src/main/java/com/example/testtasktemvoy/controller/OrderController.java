@@ -2,10 +2,8 @@ package com.example.testtasktemvoy.controller;
 
 import com.example.testtasktemvoy.dto.CreateOrderDto;
 import com.example.testtasktemvoy.dto.OrderDto;
-import com.example.testtasktemvoy.model.Order;
 import com.example.testtasktemvoy.model.User;
 import com.example.testtasktemvoy.service.OrderService;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

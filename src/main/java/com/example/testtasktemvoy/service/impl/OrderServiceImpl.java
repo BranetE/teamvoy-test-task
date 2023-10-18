@@ -11,7 +11,6 @@ import com.example.testtasktemvoy.model.OrderStatus;
 import com.example.testtasktemvoy.model.Product;
 import com.example.testtasktemvoy.model.Role;
 import com.example.testtasktemvoy.model.User;
-import com.example.testtasktemvoy.repository.OrderProductRepository;
 import com.example.testtasktemvoy.repository.OrderRepository;
 import com.example.testtasktemvoy.repository.ProductRepository;
 import com.example.testtasktemvoy.service.OrderService;
@@ -123,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
 
         if(!Objects.equals(currentUser.getId(), order.getUser().getId())
                 && !currentUser.getRole().equals(Role.ADMIN)){
-            throw new AccessDeniedException("You can update only your own orders");
+            throw new AccessDeniedException(ErrorMessage.USER_DOESNT_HAVE_ACCESS);
         }
     }
 

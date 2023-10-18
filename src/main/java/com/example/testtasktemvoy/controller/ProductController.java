@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@PreAuthorize("hasAuthority('ADMIN')")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -26,6 +25,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<HttpStatus> createProduct(@Valid @RequestBody CreateProductDto createProductDto){
 
         productService.createProduct(createProductDto);
@@ -33,18 +33,21 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<HttpStatus> updateProduct(@Valid @RequestBody CreateProductDto createProductDto, @PathVariable Long id){
         productService.updateProduct(id, createProductDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<HttpStatus> changeItemsLeft(@PathVariable Long id, @RequestParam("itemsLeft") Integer itemsLeft){
         productService.changeItemsLeft(id, itemsLeft);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.OK);

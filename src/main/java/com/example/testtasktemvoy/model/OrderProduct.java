@@ -10,7 +10,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.Objects;
 
 @Entity
 @Table(name = "order_products")
