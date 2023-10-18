@@ -5,9 +5,12 @@ import com.example.testtasktemvoy.dto.OrderDto;
 import com.example.testtasktemvoy.model.Order;
 import com.example.testtasktemvoy.model.User;
 import com.example.testtasktemvoy.service.OrderService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,17 +33,20 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<OrderDto>> getOrders(){
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getAllOrders());
     }
 
     @GetMapping("/getByUser/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN') or #userId == principal.id")
     public ResponseEntity<List<OrderDto>> getOrdersByUser(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrdersByUser(userId));
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createOrder(@RequestBody @Valid CreateOrderDto createOrderDto, @AuthenticationPrincipal User currentUser) {
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<HttpStatus> createOrder(@RequestBody @Valid CreateOrderDto createOrderDto, @AuthenticationPrincipal @Parameter(hidden = true) User currentUser) {
         orderService.createOrder(createOrderDto, currentUser);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -52,6 +58,7 @@ public class OrderController {
     }
 
     @PatchMapping("/{id}/pay")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<HttpStatus> markOrderAsPaid(@PathVariable Long id){
         orderService.markOrderAsPaid(id);
         return new ResponseEntity<>(HttpStatus.OK);

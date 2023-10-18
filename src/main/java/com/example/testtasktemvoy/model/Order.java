@@ -29,7 +29,7 @@ public class Order {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
     @JsonManagedReference
-    @OneToMany(mappedBy = "pk.order", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pk.order", fetch = FetchType.EAGER,cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     private List<OrderProduct> orderProducts;
     @ManyToOne
     @JoinColumn(name = "user_id")

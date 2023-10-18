@@ -21,10 +21,10 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class OrderProductPK implements Serializable {
     @JsonBackReference
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Order order;
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
 }

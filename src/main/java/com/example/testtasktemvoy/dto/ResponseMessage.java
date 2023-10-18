@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class ResponseMessage {
     Integer status;
+    String exception;
     String url;
     String message;
     String stackTrace;
