@@ -1,6 +1,10 @@
 package com.temvoy.test.task.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,15 +36,21 @@ public class JwtFilter extends OncePerRequestFilter {
             @NotNull FilterChain filterChain) throws ServletException, IOException {
 
         String token = getToken(request);
+        try {
 
-        if(hasText(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            String email = jwtProvider.getSubject(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            if(jwtProvider.isTokenValid(token, userDetails)){
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            if (hasText(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
+                String email = jwtProvider.getSubject(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                if (jwtProvider.isTokenValid(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
             }
+        } catch (ExpiredJwtException e) {
+            throw new AccountExpiredException(e.getMessage());
+        } catch (Exception e){
+            throw new InsufficientAuthenticationException(e.getMessage());
         }
         filterChain.doFilter(request, response);
     }

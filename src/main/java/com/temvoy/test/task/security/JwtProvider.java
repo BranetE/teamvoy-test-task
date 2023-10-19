@@ -1,11 +1,14 @@
 package com.temvoy.test.task.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +34,7 @@ public class JwtProvider {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         String email = extractClaim(token, Claims::getSubject);
         return (email.equals(userDetails.getUsername())) && !isTokenExpired(token);
+
     }
 
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
@@ -40,14 +44,16 @@ public class JwtProvider {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+
+
     }
 
-    private Claims extractAllClaims(String token){
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+    private Claims extractAllClaims(String token) {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {

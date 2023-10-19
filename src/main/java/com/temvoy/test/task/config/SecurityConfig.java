@@ -1,5 +1,6 @@
 package com.temvoy.test.task.config;
 
+import com.temvoy.test.task.security.JwtAuthenticationEntryPoint;
 import com.temvoy.test.task.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final JwtAuthenticationEntryPoint entryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -37,14 +39,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests()
                         .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .antMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(entryPoint)
+                .and()
                 .build();
-
     }
 }
